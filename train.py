@@ -212,8 +212,8 @@ def main(**kwargs):
     df_train = pd.read_csv('data/df_train.csv')
     df_test = pd.read_csv('data/df_test.csv')
     
-#     tokenizer = BertTokenizer.from_pretrained('bert-base-chinese')
-    tokenizer = BertTokenizer.from_pretrained('hfl/chinese-roberta-wwm-ext-large')
+    tokenizer = BertTokenizer.from_pretrained('bert-base-chinese')
+#     tokenizer = BertTokenizer.from_pretrained('hfl/chinese-roberta-wwm-ext-large')
     
     inputs = compute_input_arrays(df_train,opt.input_categories,tokenizer,opt.MAX_SEQUENCE_LENGTH)
     test_inputs = compute_input_arrays(df_test,opt.input_categories,tokenizer,opt.MAX_SEQUENCE_LENGTH)
@@ -256,15 +256,11 @@ def main(**kwargs):
                             batch_size=opt.pred_size,shuffle=False,
                             num_workers=opt.num_workers)
         
-        if os.path.exists(opt.model_path):
-            vis.log("=========载入模型===========")
-            model = torch.load(opt.model_path)
             
-        else:
-            vis.log("=========初始模型===========")
-#             PreModel = BertModel.from_pretrained('bert-base-chinese')
-            PreModel = BertModel.from_pretrained('hfl/chinese-roberta-wwm-ext-large')
-            model = Net(PreModel)
+        vis.log("=========初始模型===========")
+        PreModel = BertModel.from_pretrained('bert-base-chinese')
+#        PreModel = BertModel.from_pretrained('hfl/chinese-roberta-wwm-ext-large')
+        model = Net(PreModel)
             
         model.to(opt.device)
         if opt.num_workers !=0:
